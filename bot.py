@@ -2,18 +2,18 @@ from pyrogram import Client, filters
 from pymongo import MongoClient
 import os
 
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-MONGO_URI = os.environ.get("MONGO_URI")
+API_ID = int(os.environ.get("22602867"))
+API_HASH = os.environ.get("7e2042dde2f4a8278cbe9d3bebae8ac5")
+BOT_TOKEN = os.environ.get("8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8")
+MONGO_URI = os.environ.get("mongodb+srv://dark:12345@cluster0.i65p4do.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 # MongoDB connection
-client_mongo = MongoClient(MONGO_URI)
+client_mongo = MongoClient(mongodb+srv://dark:12345@cluster0.i65p4do.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0)
 db = client_mongo["bio_link_detector"]
 users_collection = db["users"]
 
 # Pyrogram bot client
-app = Client("BioLinkBot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app = Client("BioLinkBot", api_id=22602867, api_hash=7e2042dde2f4a8278cbe9d3bebae8ac5, bot_token=8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8)
 
 # /start command
 @app.on_message(filters.command("start") & filters.private)
