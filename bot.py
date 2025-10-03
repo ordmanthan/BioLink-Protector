@@ -1,6 +1,12 @@
-from pyrogram import Client, filters
-from pymongo import MongoClient
 import os
+import time
+import pytz
+from datetime import datetime
+from pyrogram import Client, filters
+
+# --- Fix for Heroku time mismatch ---
+utc_now = datetime.now(pytz.utc)
+time.time = lambda: utc_now.timestamp()
 
 API_ID = int(os.environ.get("API_ID"))
 API_HASH = os.environ.get("API_HASH")
