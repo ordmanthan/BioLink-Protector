@@ -43,7 +43,7 @@ Use /help to see all available commands.
 @app.on_message(filters.new_chat_members)
 async def new_member(client, message):
     for member in message.new_chat_members:
-        bio = member.bio if hasattr(member, 'bio') else ""
+        bio = getattr(member, 'bio', "")
         if "http" in bio:
             await message.reply_text(f"{member.mention} your bio contains a link! ⚠️")
             users_collection.update_one(
@@ -54,3 +54,4 @@ async def new_member(client, message):
 
 # ====== Run Bot ======
 app.run()
+
