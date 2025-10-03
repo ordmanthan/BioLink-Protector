@@ -1,23 +1,19 @@
-import os
+from pyrogram import Client
+from pyrogram.raw import functions
 import time
-import pytz
-from datetime import datetime
-from pyrogram import Client, filters
+import os
 
-# --- Fix for Heroku time mismatch ---
-utc_now = datetime.now(pytz.utc)
-time.time = lambda: utc_now.timestamp()
+API_ID = int(os.environ.get("22602867"))
+API_HASH = os.environ.get("7e2042dde2f4a8278cbe9d3bebae8ac5")
+BOT_TOKEN = os.environ.get("8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8")
 
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-MONGO_URI = os.environ.get("MONGO_URI")
+app = Client("my_bot", api_id=22602867, api_hash=7e2042dde2f4a8278cbe9d3bebae8ac5, bot_token=8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8)
 
-client_mongo = MongoClient(MONGO_URI)
-db = client_mongo["bio_link_detector"]
-users_collection = db["users"]
+# Time sync fix
+with app:
+    app.send(functions.Ping(ping_id=int(time.time())))
 
-app = Client("BioLinkBot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app.run()
 from pyrogram.raw import functions
 
 # bot start से पहले
