@@ -1,37 +1,28 @@
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.raw import functions
-import time
-import os
-
-API_ID = int(os.environ.get("22602867"))
-API_HASH = os.environ.get("7e2042dde2f4a8278cbe9d3bebae8ac5")
-BOT_TOKEN = os.environ.get("8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8")
 from pymongo import MongoClient
+import os
+import time
 
-MONGO_URI = os.environ.get("mongodb+srv://dark:12345@cluster0.i65p4do.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-client_mongo = MongoClient(mongodb+srv://dark:12345@cluster0.i65p4do.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0)
+# ====== Environment Variables ======
+API_ID = int(os.environ.get("API_ID"))
+API_HASH = os.environ.get("API_HASH")
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+MONGO_URI = os.environ.get("MONGO_URI")
+
+# ====== MongoDB Setup ======
+client_mongo = MongoClient(MONGO_URI)
 db = client_mongo["biolink_db"]
+users_collection = db["users"]
 
+# ====== Pyrogram Bot Setup ======
+app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-app = Client("my_bot", api_id=22602867, api_hash=7e2042dde2f4a8278cbe9d3bebae8ac5, bot_token=8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8)
-
-# ===== Time sync fix =====
-with app:
-    app.send(functions.Ping(ping_id=int(time.time())))
-# ========================
-
-
-# Time sync fix
+# ====== Time Sync Fix ======
 with app:
     app.send(functions.Ping(ping_id=int(time.time())))
 
-app.run()
-from pyrogram.raw import functions
-
-# bot start से पहले
-await app.send(functions.Ping(ping_id=int(time.time())))
-
-
+# ====== Handlers ======
 @app.on_message(filters.command("start") & filters.private)
 async def start(client, message):
     welcome_text = """
@@ -55,7 +46,11 @@ async def new_member(client, message):
         bio = member.bio if hasattr(member, 'bio') else ""
         if "http" in bio:
             await message.reply_text(f"{member.mention} your bio contains a link! ⚠️")
-            users_collection.update_one({"user_id": member.id}, {"$set": {"has_link": True}}, upsert=True)
+            users_collection.update_one(
+                {"user_id": member.id}, 
+                {"$set": {"has_link": True}}, 
+                upsert=True
+            )
 
+# ====== Run Bot ======
 app.run()
-
