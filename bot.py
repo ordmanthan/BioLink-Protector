@@ -15,6 +15,12 @@ db = client_mongo["biolink_db"]
 
 app = Client("my_bot", api_id=22602867, api_hash=7e2042dde2f4a8278cbe9d3bebae8ac5, bot_token=8137321769:AAHAeHKLxh0T5-QDwYXQXUgCJAne4u02Kh8)
 
+# ===== Time sync fix =====
+with app:
+    app.send(functions.Ping(ping_id=int(time.time())))
+# ========================
+
+
 # Time sync fix
 with app:
     app.send(functions.Ping(ping_id=int(time.time())))
