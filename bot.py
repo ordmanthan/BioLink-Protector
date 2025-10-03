@@ -18,6 +18,11 @@ db = client_mongo["bio_link_detector"]
 users_collection = db["users"]
 
 app = Client("BioLinkBot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+from pyrogram.raw import functions
+
+# bot start से पहले
+await app.send(functions.Ping(ping_id=int(time.time())))
+
 
 @app.on_message(filters.command("start") & filters.private)
 async def start(client, message):
